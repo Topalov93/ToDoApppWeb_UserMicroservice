@@ -20,50 +20,6 @@ namespace ToDoApp.Services.UserService
             _usersRepository = userRepository;
         }
 
-        public async Task<User> GetInitialUser()
-        {
-            return await _usersRepository.GetUserByName(Constants.InitialLoginUsername);
-        }
-
-        public async Task<ResultState> InitialLogin(User initialUser)
-        {
-            while (initialUser.Username != Constants.InitialLoginUsername || initialUser.Password != Constants.InitialLoginPassword)
-            {
-                return new ResultState(false, Messages.WrongInitialCredentials);
-            }
-
-            initialUser.Role = UserRolesEnum.admin.ToString();
-
-            try
-            {
-                await _usersRepository.CreateUser(initialUser);
-                CurrentUser = initialUser;
-                return new ResultState(true, Messages.SuccessfulLogin);
-            }
-            catch (Exception ex)
-            {
-                return new ResultState(false, Messages.UnableToCreateInitialUser, ex);
-            }
-        }
-
-        public async Task<ResultState> Login(User user)
-        {
-            var userToLogin = await _usersRepository.GetUserByNameAndPassword(user.Username, user.Password);
-
-            if (userToLogin is not null)
-            {
-                CurrentUser = userToLogin;
-                return new ResultState(true, Messages.SuccessfulLogin);
-            }
-
-            return new ResultState(false, Messages.WrongCredentials);
-        }
-
-        public void Logout()
-        {
-            CurrentUser = null;
-        }
-
         public async Task<ResultState> CreateUser(User newUserInfoHolder)
         {
             if (await _usersRepository.GetUserByName(newUserInfoHolder.Username) != null)
@@ -82,7 +38,7 @@ namespace ToDoApp.Services.UserService
             }
         }
 
-        public async Task<ResultState> EditUser(int userToEditId, User newInfoHolderUser, int currentUserId)
+        public async Task<ResultState> EditUser(int userToEditId, User newInfoHolderUser)
         {
             User userToEdit = await _usersRepository.GetUserById(userToEditId);
 
@@ -94,11 +50,6 @@ namespace ToDoApp.Services.UserService
             if (userToEdit.Id == 1)
             {
                 return new ResultState(false, Messages.UserInitialEditingUnsuccessful);
-            }
-
-            if (userToEdit.Id == currentUserId)
-            {
-                return new ResultState(false, Messages.UserCurrentEditingUnsuccessful);
             }
 
             newInfoHolderUser.EditedOn = DateTime.UtcNow;
@@ -114,7 +65,7 @@ namespace ToDoApp.Services.UserService
             }
         }
 
-        public async Task<ResultState> DeleteUser(int userToDeleteId, int currentUserId)
+        public async Task<ResultState> DeleteUser(int userToDeleteId)
         {
             User userToDelete = await _usersRepository.GetUserById(userToDeleteId);
 
@@ -126,11 +77,6 @@ namespace ToDoApp.Services.UserService
             if (userToDelete.Id == 1)
             {
                 return new ResultState(false, Messages.UserInitialAdminDeletingUnsuccessful);
-            }
-
-            if (userToDelete.Id == currentUserId)
-            {
-                return new ResultState(false, Messages.UserCurrentDeletingUnsuccessful);
             }
 
             try

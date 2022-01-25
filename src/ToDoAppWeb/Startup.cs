@@ -14,10 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using ToDoApp.Services.TaskService;
-using ToDoAppWeb.Auth;
 using ToDoAppWeb.ExceptionHandler;
-using ToDoAppWeb.Filters;
 
 namespace ToDoAppWeb
 {
@@ -34,13 +31,11 @@ namespace ToDoAppWeb
         public void ConfigureServices(IServiceCollection services)
         {
             DbInitializer.InitializeDatabase();
-            AuthInitializer.Initialize();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ToDoAppWeb", Version = "v1" });
-                c.OperationFilter<UserHeaderFilter>();
             });
         }
 

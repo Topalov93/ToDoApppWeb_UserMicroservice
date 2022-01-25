@@ -30,50 +30,6 @@ namespace DAL.Data
 
         public async Task DeleteUserBy(int userId)
         {
-            var tasksAssignedToUser = await UsersToDoTasks.Where(t => t.UserId == userId).ToListAsync();
-
-            foreach (var item in tasksAssignedToUser)
-            {
-                UsersToDoTasks.Remove(item);
-            }
-
-            var tasksCreatedByUser = await ToDoTasks.Where(l => l.UserId == userId).ToListAsync();
-
-            foreach (var toDoTask in tasksCreatedByUser)
-            {
-                foreach (var item in UsersToDoTasks.Where(i => i.ToDoTaskId == toDoTask.Id))
-                {
-                    UsersToDoTasks.Remove(item);
-                }
-            }
-
-            foreach (var toDoTask in tasksCreatedByUser)
-            {
-                ToDoTasks.Remove(toDoTask);
-            }
-
-            var listsSharedToUser = await UsersToDoLists.Where(t => t.UserId == userId).ToListAsync();
-
-            foreach (var item in listsSharedToUser)
-            {
-                UsersToDoLists.Remove(item);
-            }
-
-            var listsCreatedByUser = await ToDoLists.Where(l => l.UserId == userId).ToListAsync();
-
-            foreach (var toDoList in listsCreatedByUser)
-            {
-                foreach (var item in UsersToDoLists.Where(i => i.ToDoListId == toDoList.Id))
-                {
-                    UsersToDoLists.Remove(item);
-                }
-            }
-
-            foreach (var toDoList in listsCreatedByUser)
-            {
-                ToDoLists.Remove(toDoList);
-            }
-
             var userToDelete = await Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
 
             Users.Remove(userToDelete);

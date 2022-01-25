@@ -1,5 +1,4 @@
-﻿using DAL.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -38,13 +37,7 @@ namespace ToDoApp.Models.Users
 
         public int? EditedBy { get; set; }
 
-        public virtual ICollection<ToDoList> CreatedToDoLists { get; set; }
-
-        public virtual ICollection<ToDoTask> CreatedToDoTasks { get; set; }
-
-        public virtual ICollection<UserToDoList> ToDoListsShared { get; set; }
-
-        public virtual ICollection<UserToDoTask> ToDoTasksAssigned { get; set; }
+        //public virtual ICollection<ToDoList> CreatedToDoLists { get; set; }
 
         public override string ToString()
         {
