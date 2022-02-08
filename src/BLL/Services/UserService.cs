@@ -2,21 +2,23 @@
 using Common.Constants;
 using Common.Enums;
 using DAL.Data;
+using DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoApp.Models.Users;
+using UserMicroservice_Message_Send.SendMessage;
 
 namespace ToDoApp.Services.UserService
 {
     public class UserService : IUserService
     {
-        private readonly UsersRepository _usersRepository;
+        private IUserRepository _usersRepository;
+        private IUserUpdateSender _userUpdateSender;
 
-        public User CurrentUser { get; set; }
-
-        public UserService(UsersRepository userRepository)
+        public UserService(IUserRepository userRepository, IUserUpdateSender updateSender)
         {
+            _userUpdateSender = updateSender;
             _usersRepository = userRepository;
         }
 
@@ -47,22 +49,35 @@ namespace ToDoApp.Services.UserService
                 return new ResultState(false, Messages.UserDoesntExist);
             }
 
-            if (userToEdit.Id == 1)
-            {
-                return new ResultState(false, Messages.UserInitialEditingUnsuccessful);
-            }
-
             newInfoHolderUser.EditedOn = DateTime.UtcNow;
+
+            ResultState resultstate = new ResultState(true, "");
 
             try
             {
                 await _usersRepository.EditUserBy(userToEditId, newInfoHolderUser);
-                return new ResultState(true, Messages.UserEditSuccessfull);
+                resultstate.Message = Messages.UserEditSuccessfull;
             }
             catch (Exception ex)
             {
-                return new ResultState(false, Messages.UnableToEditUser, ex);
+                resultstate.IsSuccessful = false;
+                resultstate.Message = Messages.UnableToEditUser;
+                resultstate.ThrownException = ex;
+                return resultstate;
             }
+
+            try
+            {
+                User updatedUser = await _usersRepository.GetUserById(userToEditId);
+                _userUpdateSender.Send(updatedUser);
+                return resultstate;
+            }
+            catch (Exception ex)
+            {
+                resultstate.Message = (Messages.UserEditSuccessfull + "Unsuccessful send to message queue");
+                resultstate.ThrownException = ex;
+            }
+            return resultstate;
         }
 
         public async Task<ResultState> DeleteUser(int userToDeleteId)

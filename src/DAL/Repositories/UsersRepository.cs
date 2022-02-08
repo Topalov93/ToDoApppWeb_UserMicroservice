@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAL.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,17 +7,24 @@ using ToDoApp.Models.Users;
 
 namespace DAL.Data
 {
-    public class UsersRepository : ToDoAppDbContext
+    public class UsersRepository : IUserRepository
     {
+        private ToDoAppDbContext _context;
+
+        public UsersRepository(ToDoAppDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task CreateUser(User newInfoHolderUser)
         {
-            await Users.Add(newInfoHolderUser).ReloadAsync();
-            SaveChanges();
+            await _context.Users.Add(newInfoHolderUser).ReloadAsync();
+            _context.SaveChanges();
         }
 
         public async Task EditUserBy(int userId, User newInfoHolderUser)
         {
-            User userToEdit = await Users.FirstOrDefaultAsync(u => u.Id == userId);
+            User userToEdit = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             userToEdit.Username = newInfoHolderUser.Username;
             userToEdit.Password = newInfoHolderUser.Password;
@@ -25,36 +33,36 @@ namespace DAL.Data
             userToEdit.EditedOn = newInfoHolderUser.EditedOn;
             userToEdit.EditedBy = newInfoHolderUser.EditedBy;
 
-            SaveChanges();
+            _context.SaveChanges();
         }
 
         public async Task DeleteUserBy(int userId)
         {
-            var userToDelete = await Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+            var userToDelete = await _context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
 
-            Users.Remove(userToDelete);
+            _context.Users.Remove(userToDelete);
 
-            SaveChanges();
+            _context.SaveChanges();
         }
 
         public Task<List<User>> GetUsers()
         {
-            return Users.ToListAsync();
+            return _context.Users.ToListAsync();
         }
 
         public Task<User> GetUserById(int userId)
         {
-            return Users.FirstOrDefaultAsync(u => u.Id == userId);
+            return _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public Task<User> GetUserByName(string userName)
         {
-            return Users.FirstOrDefaultAsync(u => u.Username == userName);
+            return _context.Users.FirstOrDefaultAsync(u => u.Username == userName);
         }
 
         public Task<User> GetUserByNameAndPassword(string username, string password)
         {
-            return Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+            return _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
         }
     }
 }

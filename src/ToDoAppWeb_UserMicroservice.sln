@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoAppWeb", "ToDoAppWeb\To
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoApp.Models", "ToDoApp.Models\ToDoApp.Models.csproj", "{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMicroservice_Message_Send", "UserMicroservice_Message_Send\UserMicroservice_Message_Send.csproj", "{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

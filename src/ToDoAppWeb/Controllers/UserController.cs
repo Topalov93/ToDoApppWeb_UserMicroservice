@@ -6,6 +6,7 @@ using ToDoApp.Models.DTO.Requests;
 using ToDoApp.Models.DTO.Responses;
 using ToDoApp.Models.Users;
 using ToDoApp.Services.UserService;
+using UserMicroservice_Message_Send.SendMessage;
 
 namespace ToDoAppWeb.Controllers
 {
@@ -13,11 +14,11 @@ namespace ToDoAppWeb.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        public UserService _userService;
+        public IUserService _userService;
 
-        public UserController() : base()
+        public UserController(IUserService userService) : base()
         {
-            _userService = new UserService(new UsersRepository());
+            _userService = userService;
         }
 
         [HttpGet]
@@ -88,7 +89,6 @@ namespace ToDoAppWeb.Controllers
 
             if (resultState.IsSuccessful)
             {
-
                 return Ok(resultState.Message);
             }
             else

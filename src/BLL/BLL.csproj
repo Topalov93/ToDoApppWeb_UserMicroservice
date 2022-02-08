@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\ToDoApp.Models\ToDoApp.Models.csproj" />
+    <ProjectReference Include="..\UserMicroservice_Message_Send\UserMicroservice_Message_Send.csproj" />
   </ItemGroup>
 
 </Project>
