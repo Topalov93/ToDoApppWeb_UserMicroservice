@@ -1,12 +1,10 @@
-﻿using DAL.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoApp.Models.DTO.Requests;
 using ToDoApp.Models.DTO.Responses;
 using ToDoApp.Models.Users;
 using ToDoApp.Services.UserService;
-using UserMicroservice_Message_Send.SendMessage;
 
 namespace ToDoAppWeb.Controllers
 {

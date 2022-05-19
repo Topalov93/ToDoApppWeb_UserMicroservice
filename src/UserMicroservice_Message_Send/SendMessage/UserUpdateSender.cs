@@ -40,7 +40,7 @@ namespace UserMicroservice_Message_Send.SendMessage
 
                     var json = JsonConvert.SerializeObject(user);
                     var body = Encoding.UTF8.GetBytes(json);
-
+                     
                     channel.BasicPublish(exchange: "", routingKey: _queueName, basicProperties: null, body: body);
                 }
             }
