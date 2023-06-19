@@ -1,25 +1,14 @@
 using DAL.Data;
 using DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using ToDoApp.Services.UserService;
 using ToDoAppWeb.ExceptionHandler;
-using UserMicroservice_Message_Send.Options;
-using UserMicroservice_Message_Send.SendMessage;
 
 namespace ToDoAppWeb
 {
@@ -43,15 +32,6 @@ namespace ToDoAppWeb
 
             //EFCore
             services.AddDbContext<ToDoAppDbContext>(options => options.UseSqlServer("Data Source = .;Initial Catalog = ToDoAppdbWeb_UserMicroservice;Integrated Security = True;TrustServerCertificate = False;"));
-
-            services.Configure<RabbitMqOptions>(Configuration.GetSection("RabbitMq"));
-
-            bool.TryParse(Configuration["BaseServiceSettings:UserabbitMq"], out var useRabbitMq);
-
-            if (useRabbitMq)
-            {
-                services.AddTransient<IUserUpdateSender, UserUpdateSender>();
-            }
 
             services.AddTransient<IUserRepository, UsersRepository>();
 

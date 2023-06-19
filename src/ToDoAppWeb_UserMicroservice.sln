@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31205.134
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{ED10BFB9-D3EF-4E1E-813E-6B7290A6C5D8}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoAppWeb", "ToDoAppWeb\ToDoAppWeb.csproj", "{1106B7C6-D580-427E-8EA2-6FCD1EE3AF02}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoApp.Models", "ToDoApp.Models\ToDoApp.Models.csproj", "{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMicroservice_Message_Send", "UserMicroservice_Message_Send\UserMicroservice_Message_Send.csproj", "{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +39,6 @@ Global
 		{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEE6C2EE-AB9A-4055-B21E-E77F999D2AF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{097B7114-D1F3-4F2A-858A-3F008D5CE8C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

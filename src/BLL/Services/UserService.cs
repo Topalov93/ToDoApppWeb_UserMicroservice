@@ -7,18 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoApp.Models.Users;
-using UserMicroservice_Message_Send.SendMessage;
 
 namespace ToDoApp.Services.UserService
 {
     public class UserService : IUserService
     {
         private IUserRepository _usersRepository;
-        private IUserUpdateSender _userUpdateSender;
 
-        public UserService(IUserRepository userRepository, IUserUpdateSender updateSender)
+        public UserService(IUserRepository userRepository)
         {
-            _userUpdateSender = updateSender;
             _usersRepository = userRepository;
         }
 
@@ -66,17 +63,6 @@ namespace ToDoApp.Services.UserService
                 return resultstate;
             }
 
-            try
-            {
-                User updatedUser = await _usersRepository.GetUserById(userToEditId);
-                _userUpdateSender.Send(updatedUser);
-                return resultstate;
-            }
-            catch (Exception ex)
-            {
-                resultstate.Message = (Messages.UserEditSuccessfull + "Unsuccessful send to message queue");
-                resultstate.ThrownException = ex;
-            }
             return resultstate;
         }
 
