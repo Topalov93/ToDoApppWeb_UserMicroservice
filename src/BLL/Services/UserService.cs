@@ -4,6 +4,7 @@ using Common.Enums;
 using DAL.Data;
 using DAL.Repositories;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoApp.Models.Users;
@@ -61,6 +62,16 @@ namespace ToDoApp.Services.UserService
                 resultstate.Message = Messages.UnableToEditUser;
                 resultstate.ThrownException = ex;
                 return resultstate;
+            }
+
+            try
+            {
+                var producer = new IProducerConsumerCollection()
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
 
             return resultstate;
