@@ -82,6 +82,7 @@ namespace ToDoAppWeb.Controllers
                 Password = user.Password,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                Email= user.Email,
             };
 
             var resultState = await _userService.EditUser(userId, userToEdit);

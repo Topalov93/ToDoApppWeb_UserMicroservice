@@ -17,7 +17,7 @@ namespace ToDoAppWeb.KafkaProducer
     public class TopicProducer : BackgroundService, ITopicProducer
     {
         private const string topic = "Users";
-        public User Message = new User();
+        public User Message = null;
 
         public TopicProducer()
         {
@@ -35,6 +35,8 @@ namespace ToDoAppWeb.KafkaProducer
             {
                 var message = GenerateMessage();
                 var numProduced = 0;
+
+                if (message is null) return Task.CompletedTask;
 
                 producer.Produce(topic, message,
                     (deliveryReport) =>
@@ -60,6 +62,9 @@ namespace ToDoAppWeb.KafkaProducer
         protected Message<string, string> GenerateMessage()
         {
             var rawMessage = Message;
+
+            if ( rawMessage is null ) return null;
+            
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"username: {rawMessage.Username}");
             sb.AppendLine($"firstname: {rawMessage.FirstName}");
