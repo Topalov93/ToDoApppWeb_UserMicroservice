@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Constants;
 using Common.Enums;
+using Confluent.Kafka;
 using DAL.Data;
 using DAL.Repositories;
 using System;
@@ -64,16 +65,6 @@ namespace ToDoApp.Services.UserService
                 return resultstate;
             }
 
-            try
-            {
-                var producer = new IProducerConsumerCollection()
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
             return resultstate;
         }
 
@@ -110,6 +101,11 @@ namespace ToDoApp.Services.UserService
         public async Task<User> GetUserByNameAndPassword(string username, string password)
         {
             return await _usersRepository.GetUserByNameAndPassword(username, password);
+        }
+
+        public async Task<User> GetLastUpdatedUser()
+        {
+            return _usersRepository.GetLastUpdatedUser();
         }
     }
 }

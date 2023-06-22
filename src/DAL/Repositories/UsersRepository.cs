@@ -64,6 +64,12 @@ namespace DAL.Data
         {
             return _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
         }
+        public User GetLastUpdatedUser()
+        {
+            var users = GetUsers().Result.OrderBy(x => x.EditedBy).ToList();
+
+            return users.FirstOrDefault();
+        }
     }
 }
 

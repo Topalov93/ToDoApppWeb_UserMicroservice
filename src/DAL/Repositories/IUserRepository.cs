@@ -22,5 +22,7 @@ namespace DAL.Repositories
         public Task<User> GetUserByName(string userName);
 
         public Task<User> GetUserByNameAndPassword(string username, string password);
+
+        public User GetLastUpdatedUser();
     }
 }

@@ -34,12 +34,11 @@ namespace ToDoAppWeb
             //EFCore
             services.AddDbContext<ToDoAppDbContext>(options => options.UseSqlServer("Data Source = .;Initial Catalog = ToDoAppdbWeb_UserMicroservice;Integrated Security = True;TrustServerCertificate = False;"));
 
-
             services.AddTransient<IUserRepository, UsersRepository>();
 
             services.AddTransient<IUserService, UserService>();
 
-            services.AddHostedService<Producer>();
+            services.AddHostedService<TopicProducer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,6 +5,7 @@ using ToDoApp.Models.DTO.Requests;
 using ToDoApp.Models.DTO.Responses;
 using ToDoApp.Models.Users;
 using ToDoApp.Services.UserService;
+using ToDoAppWeb.KafkaProducer;
 
 namespace ToDoAppWeb.Controllers
 {
@@ -87,6 +88,16 @@ namespace ToDoAppWeb.Controllers
 
             if (resultState.IsSuccessful)
             {
+                try
+                {
+                    var producer = new TopicProducer();
+                    producer.Message = userToEdit;
+                    await producer.Produce();
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
                 return Ok(resultState.Message);
             }
             else

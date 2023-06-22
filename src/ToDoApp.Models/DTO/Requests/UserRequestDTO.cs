@@ -28,6 +28,11 @@ namespace ToDoApp.Models.DTO.Requests
         [MinLength(1)]
         [MaxLength(150)]
         public string LastName { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(150)]
+        public string Email { get; set; }
     }
 
     public class UserWithRoleRequestDTO : UserRequestDTO

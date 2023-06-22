@@ -23,6 +23,9 @@ namespace ToDoApp.Models.Users
         [MaxLength(150)]
         public string LastName { get; set; }
 
+        [MaxLength(150)]
+        public string Email { get; set; }
+
         [Required]
         [MaxLength(50)]
         public string Role { get; set; }
@@ -36,8 +39,6 @@ namespace ToDoApp.Models.Users
         public DateTime? EditedOn { get; set; }
 
         public int? EditedBy { get; set; }
-
-        //public virtual ICollection<ToDoList> CreatedToDoLists { get; set; }
 
         public override string ToString()
         {
