@@ -66,6 +66,7 @@ namespace ToDoAppWeb.KafkaProducer
             if ( rawMessage is null ) return null;
             
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"id: {rawMessage.Id}");
             sb.AppendLine($"username: {rawMessage.Username}");
             sb.AppendLine($"firstname: {rawMessage.FirstName}");
             sb.AppendLine($"lastname: {rawMessage.LastName}");
@@ -77,8 +78,10 @@ namespace ToDoAppWeb.KafkaProducer
             return message;
         }
 
-        public Task Produce()
+        public Task Produce(string userId, User rawMessage)
         {
+            Message = rawMessage;
+            Message.Id = int.Parse(userId);
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
             return ExecuteAsync(token);

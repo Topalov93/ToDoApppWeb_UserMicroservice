@@ -6,6 +6,6 @@ namespace ToDoAppWeb.KafkaProducer
 {
     public interface ITopicProducer
     {
-        public Task Produce();
+        public Task Produce(string userId, User message);
     }
 }

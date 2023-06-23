@@ -14,6 +14,8 @@ namespace ToDoApp.Models.DTO.Responses
 
         public string LastName { get; set; }
 
+        public string Email { get; set; }
+
         public string Role { get; set; }
 
         public DateTime AddedOn { get; set; }

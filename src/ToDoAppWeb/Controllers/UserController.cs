@@ -36,6 +36,7 @@ namespace ToDoAppWeb.Controllers
                     Password = user.Password,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
+                    Email = user.Email,
                     Role = user.Role,
                     AddedOn = user.AddedOn,
                     AddedBy = user.AddedBy,
@@ -74,7 +75,7 @@ namespace ToDoAppWeb.Controllers
 
         [HttpPut]
         [Route("{userId}")]
-        public async Task<ActionResult> Edit(int userId, UserRequestDTO user)
+        public async Task<ActionResult> Edit(int userId, UserWithRoleRequestDTO user)
         {
             User userToEdit = new User
             {
@@ -83,6 +84,7 @@ namespace ToDoAppWeb.Controllers
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email= user.Email,
+                Role = user.Role,
             };
 
             var resultState = await _userService.EditUser(userId, userToEdit);
@@ -92,8 +94,7 @@ namespace ToDoAppWeb.Controllers
                 try
                 {
                     var producer = new TopicProducer();
-                    producer.Message = userToEdit;
-                    await producer.Produce();
+                    await producer.Produce(userId.ToString(), userToEdit);
                 }
                 catch (System.Exception)
                 {
