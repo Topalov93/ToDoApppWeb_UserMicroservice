@@ -52,7 +52,6 @@ namespace ToDoAppWeb.KafkaProducer
                         }
                     });
 
-
                 producer.Flush(TimeSpan.FromSeconds(10));
                 Console.WriteLine($"{numProduced} messages were produced to topic {topic}");
                 return Task.CompletedTask;
@@ -63,17 +62,20 @@ namespace ToDoAppWeb.KafkaProducer
         {
             var rawMessage = Message;
 
-            if ( rawMessage is null ) return null;
-            
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"id: {rawMessage.Id}");
-            sb.AppendLine($"username: {rawMessage.Username}");
-            sb.AppendLine($"firstname: {rawMessage.FirstName}");
-            sb.AppendLine($"lastname: {rawMessage.LastName}");
-            sb.AppendLine($"email: {rawMessage.Email}");
-            sb.AppendLine($"role: {rawMessage.Role}");
+            if (rawMessage is null) return null;
 
-            var message = new Message<string, string> { Key = rawMessage.Id.ToString(), Value = sb.ToString() };
+            var user = new User()
+            {
+                Id = rawMessage.Id,
+                FirstName = rawMessage.FirstName,
+                LastName = rawMessage.LastName,
+                Email = rawMessage.Email,
+                Role = rawMessage.Role,
+            };
+
+            var userAsJson = JsonConvert.SerializeObject(user);
+
+            var message = new Message<string, string> { Key = rawMessage.Id.ToString(), Value = userAsJson };
 
             return message;
         }
