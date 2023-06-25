@@ -47,7 +47,7 @@ namespace ToDoAppWeb.KafkaProducer
                         }
                         else
                         {
-                            Console.WriteLine($"Produced event to topic {topic}: user = {message.Value}");
+                            Console.WriteLine(message.Value);
                             numProduced += 1;
                         }
                     });
@@ -74,8 +74,7 @@ namespace ToDoAppWeb.KafkaProducer
             };
 
             var userAsJson = JsonConvert.SerializeObject(user);
-
-            var message = new Message<string, string> { Key = rawMessage.Id.ToString(), Value = userAsJson };
+            var message = new Message<string, string> { Key = "", Value = userAsJson };
 
             return message;
         }
@@ -88,6 +87,5 @@ namespace ToDoAppWeb.KafkaProducer
             CancellationToken token = source.Token;
             return ExecuteAsync(token);
         }
-
     }
 }
