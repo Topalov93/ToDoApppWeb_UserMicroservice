@@ -93,7 +93,7 @@ namespace ToDoAppWeb.Controllers
             {
                 try
                 {
-                    var producer = new TopicProducer();
+                    var producer = new EventProducer();
                     await producer.Produce(userId.ToString(), userToEdit);
                 }
                 catch (System.Exception)

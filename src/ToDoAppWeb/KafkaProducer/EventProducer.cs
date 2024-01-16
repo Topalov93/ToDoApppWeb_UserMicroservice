@@ -14,12 +14,12 @@ using ToDoApp.Services.UserService;
 
 namespace ToDoAppWeb.KafkaProducer
 {
-    public class TopicProducer : BackgroundService, ITopicProducer
+    public class EventProducer : BackgroundService, IEventProducer
     {
         private const string topic = "Users";
         public User Message = null;
 
-        public TopicProducer()
+        public EventProducer()
         {
         }
 

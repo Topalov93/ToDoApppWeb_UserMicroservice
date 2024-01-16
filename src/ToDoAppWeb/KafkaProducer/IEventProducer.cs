@@ -4,7 +4,7 @@ using ToDoApp.Models.Users;
 
 namespace ToDoAppWeb.KafkaProducer
 {
-    public interface ITopicProducer
+    public interface IEventProducer
     {
         public Task Produce(string userId, User message);
     }

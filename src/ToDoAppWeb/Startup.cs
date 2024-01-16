@@ -38,7 +38,7 @@ namespace ToDoAppWeb
 
             services.AddTransient<IUserService, UserService>();
 
-            services.AddHostedService<TopicProducer>();
+            services.AddHostedService<EventProducer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
