@@ -21,16 +21,16 @@ namespace ToDoApp.Services.UserService
             _usersRepository = userRepository;
         }
 
-        public async Task<ResultState> CreateUser(User newUserInfoHolder)
+        public async Task<ResultState> Create(User newUserInfoHolder)
         {
-            if (await _usersRepository.GetUserByName(newUserInfoHolder.Username) != null)
+            if (await _usersRepository.GetByName(newUserInfoHolder.Username) != null)
             {
                 return new ResultState(false, Messages.UserAlreadyExist);
             }
 
             try
             {
-                await _usersRepository.CreateUser(newUserInfoHolder);
+                await _usersRepository.Create(newUserInfoHolder);
                 return new ResultState(true, Messages.UserCreationSuccessfull);
             }
             catch (Exception)
@@ -39,9 +39,19 @@ namespace ToDoApp.Services.UserService
             }
         }
 
+        public async Task<List<User>> GetAll()
+        {
+            return await _usersRepository.GetAll();
+        }
+
+        public async Task<User> GetUserByNameAndPassword(string username, string password)
+        {
+            return await _usersRepository.GetByNameAndPassword(username, password);
+        }
+
         public async Task<ResultState> EditUser(int userToEditId, User newInfoHolderUser)
         {
-            User userToEdit = await _usersRepository.GetUserById(userToEditId);
+            User userToEdit = await _usersRepository.GetById(userToEditId);
 
             if (userToEdit is null)
             {
@@ -54,7 +64,7 @@ namespace ToDoApp.Services.UserService
 
             try
             {
-                await _usersRepository.EditUserBy(userToEditId, newInfoHolderUser);
+                await _usersRepository.Edit(userToEditId, newInfoHolderUser);
                 resultstate.Message = Messages.UserEditSuccessfull;
             }
             catch (Exception ex)
@@ -70,7 +80,7 @@ namespace ToDoApp.Services.UserService
 
         public async Task<ResultState> DeleteUser(int userToDeleteId)
         {
-            User userToDelete = await _usersRepository.GetUserById(userToDeleteId);
+            User userToDelete = await _usersRepository.GetById(userToDeleteId);
 
             if (userToDelete is null)
             {
@@ -84,7 +94,7 @@ namespace ToDoApp.Services.UserService
 
             try
             {
-                await _usersRepository.DeleteUserBy(userToDeleteId);
+                await _usersRepository.Delete(userToDeleteId);
                 return new ResultState(true, Messages.UserDeletedSuccessfull);
             }
             catch (Exception)
@@ -93,19 +103,5 @@ namespace ToDoApp.Services.UserService
             }
         }
 
-        public async Task<List<User>> ListUsers()
-        {
-            return await _usersRepository.GetUsers();
-        }
-
-        public async Task<User> GetUserByNameAndPassword(string username, string password)
-        {
-            return await _usersRepository.GetUserByNameAndPassword(username, password);
-        }
-
-        public async Task<User> GetLastUpdatedUser()
-        {
-            return _usersRepository.GetLastUpdatedUser();
-        }
     }
 }

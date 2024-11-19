@@ -9,20 +9,19 @@ namespace DAL.Repositories
 {
     public interface IUserRepository
     {
-        public Task CreateUser(User newInfoHolderUser);
+        public Task Create(User newInfoHolderUser);
 
-        public Task EditUserBy(int userId, User newInfoHolderUser);
+        public Task<List<User>> GetAll();
 
-        public Task DeleteUserBy(int userId);
+        public Task<User> GetById(int userId);
 
-        public Task<List<User>> GetUsers();
+        public Task<User> GetByName(string userName);
 
-        public Task<User> GetUserById(int userId);
+        public Task<User> GetByNameAndPassword(string username, string password);
 
-        public Task<User> GetUserByName(string userName);
+        public Task Edit(int userId, User newInfoHolderUser);
 
-        public Task<User> GetUserByNameAndPassword(string username, string password);
+        public Task Delete(int userId);
 
-        public User GetLastUpdatedUser();
     }
 }

@@ -1,4 +1,5 @@
-﻿using DAL.Repositories;
+﻿using DAL.Models;
+using DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,36 @@ namespace DAL.Data
             _context = context;
         }
 
-        public async Task CreateUser(User newInfoHolderUser)
+        // Create
+        public async Task Create(User newInfoHolderUser)
         {
             await _context.Users.Add(newInfoHolderUser).ReloadAsync();
             _context.SaveChanges();
         }
 
-        public async Task EditUserBy(int userId, User newInfoHolderUser)
+        // Read
+        public Task<List<User>> GetAll()
+        {
+            return _context.Users.ToListAsync();
+        }
+
+        public Task<User> GetById(int userId)
+        {
+            return _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
+        public Task<User> GetByName(string userName)
+        {
+            return _context.Users.FirstOrDefaultAsync(u => u.Username == userName);
+        }
+
+        public Task<User> GetByNameAndPassword(string username, string password)
+        {
+            return _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+        }
+
+        // Update
+        public async Task Edit(int userId, User newInfoHolderUser)
         {
             User userToEdit = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -31,44 +55,18 @@ namespace DAL.Data
             userToEdit.FirstName = newInfoHolderUser.FirstName;
             userToEdit.LastName = newInfoHolderUser.LastName;
             userToEdit.EditedOn = newInfoHolderUser.EditedOn;
-            userToEdit.EditedBy = newInfoHolderUser.EditedBy;
 
             _context.SaveChanges();
         }
 
-        public async Task DeleteUserBy(int userId)
+        // Delete
+        public async Task Delete(int userId)
         {
             var userToDelete = await _context.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
 
             _context.Users.Remove(userToDelete);
 
             _context.SaveChanges();
-        }
-
-        public Task<List<User>> GetUsers()
-        {
-            return _context.Users.ToListAsync();
-        }
-
-        public Task<User> GetUserById(int userId)
-        {
-            return _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-        }
-
-        public Task<User> GetUserByName(string userName)
-        {
-            return _context.Users.FirstOrDefaultAsync(u => u.Username == userName);
-        }
-
-        public Task<User> GetUserByNameAndPassword(string username, string password)
-        {
-            return _context.Users.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
-        }
-        public User GetLastUpdatedUser()
-        {
-            var users = GetUsers().Result.OrderBy(x => x.EditedBy).ToList();
-
-            return users.FirstOrDefault();
         }
     }
 }

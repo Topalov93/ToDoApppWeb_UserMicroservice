@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DAL.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ToDoApp.Models.DTO.Requests;
@@ -20,10 +21,35 @@ namespace ToDoAppWeb.Controllers
             _userService = userService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<UserResponseDTO>>> GetAll()
+        [HttpPost]
+        public async Task<ActionResult> Create(UserWithRoleRequestDTO user)
         {
-            var users = await _userService.ListUsers();
+            User userToAdd = new User
+            {
+                Username = user.Username,
+                Password = user.Password,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = user.Role,
+            };
+
+            var resultState = await _userService.Create(userToAdd);
+
+            if (resultState.IsSuccessful)
+            {
+
+                return Ok(resultState.Message);
+            }
+            else
+            {
+                return BadRequest(resultState.Message);
+            }
+
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<UserResponseDTO>>> GetAllAsAdmin()
+        {
+            var users = await _userService.GetAll();
 
             List<UserResponseDTO> usersResponse = new List<UserResponseDTO>();
 
@@ -39,38 +65,30 @@ namespace ToDoAppWeb.Controllers
                     Email = user.Email,
                     Role = user.Role,
                     AddedOn = user.AddedOn,
-                    AddedBy = user.AddedBy,
                     EditedOn = user.EditedOn,
-                    EditedBy = user.EditedBy
                 });
             }
             return usersResponse;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Post(UserWithRoleRequestDTO user)
+        [HttpGet]
+        [Route("getAllForEvent")]
+        public async Task<ActionResult<List<UserEventResponseDTO>>> GetAllForEvent()
         {
-            User userToAdd = new User
-            {
-                Username = user.Username,
-                Password = user.Password,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Role = user.Role,
-            };
+            var users = await _userService.GetAll();
 
-            var resultState = await _userService.CreateUser(userToAdd);
+            var usersList = new List<UserEventResponseDTO>();
 
-            if (resultState.IsSuccessful)
+            foreach (var user in users)
             {
-
-                return Ok(resultState.Message);
-            }
-            else
-            {
-                return BadRequest(resultState.Message);
+                usersList.Add(new UserEventResponseDTO()
+                {
+                    FullName = user.FirstName + " " + user.LastName,
+                    Email = user.Email
+                });
             }
 
+            return usersList;
         }
 
         [HttpPut]
@@ -83,7 +101,7 @@ namespace ToDoAppWeb.Controllers
                 Password = user.Password,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email= user.Email,
+                Email = user.Email,
                 Role = user.Role,
             };
 
@@ -94,7 +112,7 @@ namespace ToDoAppWeb.Controllers
                 try
                 {
                     var producer = new EventProducer();
-                    await producer.Produce(userId.ToString(), userToEdit);
+                    await producer.Produce(userId.ToString(), userToEdit, "edit");
                 }
                 catch (System.Exception)
                 {
@@ -116,7 +134,15 @@ namespace ToDoAppWeb.Controllers
 
             if (resultState.IsSuccessful)
             {
-
+                try
+                {
+                    var producer = new EventProducer();
+                    await producer.Produce(userId.ToString(), new User(), "delete");
+                }
+                catch (System.Exception)
+                {
+                    throw;
+                }
                 return Ok(resultState.Message);
             }
             else

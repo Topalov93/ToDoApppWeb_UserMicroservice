@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using DAL.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
@@ -16,8 +17,8 @@ namespace ToDoAppWeb.KafkaProducer
 {
     public class EventProducer : BackgroundService, IEventProducer
     {
-        private const string topic = "Users";
-        public User Message = null;
+        private const string topic = "users";
+        public UserEvent Message = null;
 
         public EventProducer()
         {
@@ -64,13 +65,11 @@ namespace ToDoAppWeb.KafkaProducer
 
             if (rawMessage is null) return null;
 
-            var user = new User()
+            var user = new UserEvent()
             {
                 Id = rawMessage.Id,
-                FirstName = rawMessage.FirstName,
-                LastName = rawMessage.LastName,
+                FullName = rawMessage.FullName,
                 Email = rawMessage.Email,
-                Role = rawMessage.Role,
             };
 
             var userAsJson = JsonConvert.SerializeObject(user);
@@ -79,10 +78,14 @@ namespace ToDoAppWeb.KafkaProducer
             return message;
         }
 
-        public Task Produce(string userId, User rawMessage)
+        public Task Produce(string userId, User rawMessage, string action)
         {
-            Message = rawMessage;
-            Message.Id = int.Parse(userId);
+            Message.Id = userId;
+            if (action == "edit")
+            {
+                Message.Email = rawMessage.Email;
+                Message.FullName = rawMessage.FirstName + " " + rawMessage.LastName;
+            }
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
             return ExecuteAsync(token);

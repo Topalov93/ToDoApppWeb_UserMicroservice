@@ -23,6 +23,9 @@ namespace ToDoApp.Models.Users
         [MaxLength(150)]
         public string LastName { get; set; }
 
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         [MaxLength(150)]
         public string Email { get; set; }
 
@@ -33,12 +36,7 @@ namespace ToDoApp.Models.Users
         [Required]
         public DateTime AddedOn { get; set; }
 
-        [Required]
-        public int AddedBy { get; set; }
-
         public DateTime? EditedOn { get; set; }
-
-        public int? EditedBy { get; set; }
 
         public override string ToString()
         {
@@ -51,9 +49,7 @@ namespace ToDoApp.Models.Users
             sb.AppendLine($"Last Name: {LastName}");
             sb.AppendLine($"Role: {Role}");
             sb.AppendLine($"Date Of Creation: {AddedOn}");
-            sb.AppendLine($"Creator Id: {AddedBy}");
             sb.AppendLine($"Date Of Last Edit: {EditedOn}");
-            sb.AppendLine($"Editor Id: {EditedBy}");
 
             return sb.ToString();
         }
